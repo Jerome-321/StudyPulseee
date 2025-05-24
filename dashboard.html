@@ -214,7 +214,30 @@
 <script src="modal.js"></script>
 <script src="timeTable.js"></script>
 <script src="app.js"></script>
+<script>
+  <script>
+  window.onload = function() {
+    let courses = JSON.parse(localStorage.getItem("courses")) || [];
+    let container = document.getElementById("dynamic-grades");
 
+    courses.forEach(course => {
+        let div = document.createElement("div");
+        div.className = "grade-card";
+        div.innerHTML = `
+            <h3><span class="material-icons-sharp">school</span>
+            ${course.name}</h3>
+            <p>${course.prelim} / ${course.midterm} / ${course.final}</p>
+            <div class="progress" style="--percentage:${course.percentage}">
+                <svg><circle cx="38" cy="38" r="36"></circle></svg>
+                <div class="number"><p>${course.percentage}%</p></div>
+            </div>
+            <small>Updated</small>
+        `;
+        container.appendChild(div);
+    });
+};
+</script>
+</script>
 </body>
 </html>
 
