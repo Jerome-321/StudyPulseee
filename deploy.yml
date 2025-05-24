@@ -1,0 +1,39 @@
+name: Build and Deploy StudyPulse
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Setup Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 22
+
+    # Install and build frontend
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm install
+
+    - name: Build frontend
+      working-directory: ./frontend
+      run: npm run build
+
+    # Install backend dependencies
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm install
+
+    # Optionally, run backend tests here
+
+    # Add deploy steps here (e.g., push to Render, AWS, Heroku, etc.)
+    # For example, if you use Render CLI or other deploy method

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Student Dashboard</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+<link rel="shortcut icon" href="./images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="style.css" rel="stylesheet">
+<style>
+:root {
+  --color-primary: #7380ec;
+  --color-danger: #ff7782;
+  --color-success: #41f1b6;
+  --color-warning: #ffbb55;
+  --color-white: #fff;
+  --color-info: #7d8da1;
+  --color-dark: #363949;
+  --color-light: rgba(132, 139, 200, 0.18);
+  --color-dark-varient: #677483;
+  --color-background: #f6f6f9;
+  --box-shadow: 0 2rem 3rem var(--color-light);
+  --card-border-radius: 2rem;
+  --border-radius-1: 0.4rem;
+  --border-radius-2: 1.2rem;
+  --card-padding: 1.8rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--color-background);
+  color: var(--color-dark);
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+h1 {
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+
+.gwa-tracker {
+  background: var(--color-white);
+  padding: var(--card-padding);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--box-shadow);
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap:2 2rem;
+}
+
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem; 
+}
+
+label {
+  font-weight: 600;
+  color: var(--color-dark-varient);
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--border-radius-1);
+  border: 1.5px solid var(--color-light);
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.form-row > div {
+  flex: 1;
+  min-width: 50px;
+}
+
+button {
+  padding: 0.7rem 1.4rem;
+  background: var(--color-primary);
+  border: none;
+  border-radius: var(--border-radius-2);
+  color: var(--color-white);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: var(--color-dark-varient);
+}
+
+
+.saved-courses-container {
+  max-height: 320px;
+  overflow-y: auto;
+  border-top: 2px solid var(--color-light);
+  padding-top: 1rem;
+}
+
+
+.gwa-display {
+  font-weight: 700;
+  font-size: 1.3rem;
+  line-height: 50px;
+}
+
+
+.gwa-success {
+  color: var(--color-success);
+}
+
+.gwa-warning {
+  color: var(--color-warning);
+}
+
+.gwa-danger {
+  color: var(--color-danger);
+}
+
+
+.course-card {
+  background: var(--color-light);
+  padding: 1rem 1.2rem;
+  border-radius: var(--border-radius-2);
+  margin-bottom: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 0 0 10px var(--color-white);
+}
+
+.course-header {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--color-primary);
+  margin-bottom: 0.3rem;
+}
+
+.grades-row {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.95rem;
+  color: var(--color-dark-varient);
+  margin-bottom: 0.5rem;
+}
+
+
+.course-actions {
+  margin-top: 100px;
+}
+
+.course-actions button {
+  background: var(--color-danger);
+  border-radius: var(--border-radius-1);
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+  margin-right: 0.7rem; 
+  transition: background 0.3s;
+  cursor: pointer;
+}
+
+.course-actions button.edit-btn {
+  background: var(--color-warning);
+  color: var(--color-dark);
+}
+
+
+.course-actions button:last-child {
+  margin-right: 0;
+}
+
+.course-actions button:hover {
+  filter: brightness(0.9);
+}
+
+
+.recommendations {
+  margin-top: 0.5rem;
+  background: var(--color-white);
+  border-radius: var(--border-radius-1);
+  box-shadow: 0 1px 5px var(--color-light);
+  padding: 0.8rem 1rem;
+}
+
+.recommendations h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--color-info);
+}
+
+.recommendations ul {
+  list-style: disc inside;
+  padding-left: 0.5rem;
+  margin: 0;
+}
+
+.recommendations li {
+  margin-bottom: 0.4rem;
+}
+
+.recommendations a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.recommendations a:hover {
+  text-decoration: underline;
+}
+
+
+@media (max-width: 480px) {
+  .form-row {
+    flex-direction: column;
+  }
+  button {
+    width: 100%;
+  }
+}
+.settings-modal {
+    display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100vw; height: 100vh;
+    justify-content: center; align-items: center; background: rgba(0,0,0,0.5);
+}
+.settings-modal.active { display: flex !important; }
+.settings-content {
+    background: #fff; padding: 2rem; border-radius: 10px; max-width: 600px; width: 95vw;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.settings-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.settings-tabs { display: flex; border-bottom: 1px solid #eee; }
+.settings-tab {
+    padding: 0.7rem 1.2rem; cursor: pointer; color: #aaa; font-weight: 500;
+    border-bottom: 2px solid transparent; transition: color 0.2s, border 0.2s;
+}
+.settings-tab.active {
+    color: #7380ec; border-bottom: 2px solid #7380ec;
+}
+.tab-content { display: none; margin-top: 1.5rem; }
+.tab-content.active { display: block; }
+.profile-photo-upload { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.profile-preview { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 0.5rem; border: 2px solid #7380ec;}
+.settings-form, .password-form { display: flex; flex-wrap: wrap; gap: 1rem; }
+.form-group { flex: 1 1 45%; display: flex; flex-direction: column; }
+.form-group.full-width { flex: 1 1 100%; }
+.form-group label { margin-bottom: 0.3rem; color: #666; font-size: 0.97em;}
+.form-group input, .form-group select { padding: 0.6rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;}
+.save-btn { background: #7380ec; color: #fff; border: none; border-radius: 5px; padding: 0.8rem; cursor: pointer; font-size: 1em; font-weight: 500; width: 100%;}
+.close-settings { cursor: pointer; }
+.password-form .box { display: flex; flex-direction: column; margin-bottom: 1rem; }
+.password-form .btn { background: #7380ec; color: #fff; border-radius: 5px; border: none; padding: 0.7rem 1.5rem; cursor: pointer;}
+.password-form .text-muted { color: #888; font-size: 0.95em;}
+@media (max-width: 600px) {
+    .settings-content { padding: 1rem; }
+    .form-group { flex: 1 1 100%; }
+}
+</style>
+</head>
+<body>
+<header>
+        <div class="logo">
+            <h2>Study<span class="danger">Pulse</span></h2>
+        </div>
+        <div class="navbar">
+            <a href="dashboard.html">
+                <span class="material-icons-sharp">home</span>
+                <h3>Home</h3>
+            </a>
+            <a href="timetable.html" onclick="timeTableAll()">
+                <span class="material-icons-sharp">today</span>
+                <h3>Class</h3>
+            </a> 
+            <a href="grades.html">
+                <span class="material-icons-sharp">grid_view</span>
+                <h3>Courses</h3>
+            </a>
+            <a href="#" id="openSettings">
+                <span class="material-icons-sharp">settings</span>
+                <h3>Settings</h3>
+            </a>
+            <a href="logout.php">
+                <span class="material-icons-sharp">logout</span>
+                <h3>Logout</h3>
+            </a>
+        </div>
+        <div id="profile-btn" style="display: none;">
+            <span class="material-icons-sharp">person</span>
+        </div>
+        <div class="theme-toggler">
+            <span class="material-icons-sharp active">light_mode</span>
+            <span class="material-icons-sharp">dark_mode</span>
+        </div>
+    </header>
+<div class="container">
+  <form id="course-form" autocomplete="off">
+    <label for="course-code">Course Code (e.g. CS101)</label>
+    <input type="text" id="course-code" placeholder="Enter course code" />
+
+    <label for="prelim-grade">Prelim Grade (1.0 - 5.0)</label>
+    <input type="number" id="prelim-grade" min="1" max="5" step="0.01" placeholder="1.0 to 5.0" required />
+
+    <label for="midterm-grade">Midterm Grade (1.0 - 5.0)</label>
+    <input type="number" id="midterm-grade" min="1" max="5" step="0.01" placeholder="1.0 to 5.0" required />
+
+    <label for="final-grade">Final Grade (1.0 - 5.0)</label>
+    <input type="number" id="final-grade" min="1" max="5" step="0.01" placeholder="1.0 to 5.0" required />
+
+    <button type="submit" id="submit-btn">Add Course</button>
+  </form>
+
+  <section id="saved-courses">
+    <div id="gwa-display">GWA: N/A</div>
+    
+  </section>
+</div>
+<div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h2>Account Settings</h2>
+                <span class="material-icons-sharp close-settings" id="closeSettings">close</span>
+            </div>
+            <div class="settings-tabs">
+                <div class="settings-tab active" data-tab="profile">Profile</div>
+                <div class="settings-tab" data-tab="password">Password</div>
+            </div>
+            <!-- Profile Tab -->
+            <div class="tab-content active" id="profile-tab">
+                <form class="settings-form" id="profileForm">
+                    <div class="profile-photo-upload" style="width: 100%;">
+                        <img id="profilePreview" src="./images/profile-1.jpg" alt="Profile Photo" class="profile-preview">
+                        <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+                        <button type="button" class="photo-upload-btn" onclick="document.getElementById('photoUpload').click()">Upload Photo</button>
+                        <input type="text" id="photoUrl" class="photo-url-input" placeholder="Or enter image URL">
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Contact Number</label>
+                        <input type="tel" id="contact">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="course">Course</label>
+                        <select id="course">
+                            <option value="">Select Course</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Business">Business</option>
+                            <option value="Arts">Arts</option>
+                            <option value="Science">Science</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="address">Address</label>
+                        <input type="text" id="address">
+                    </div>
+                    <button type="submit" class="save-btn">Save Profile Changes</button>
+                </form>
+            </div>
+            <!-- Password Tab -->
+            <div class="tab-content" id="password-tab">
+                <form class="password-form" id="passwordForm">
+                    <h2>Create new password</h2>
+                    <p class="text-muted">Your new password must be different from previous used passwords.</p>
+                    <div class="box">
+                        <p class="text-muted">Current Password</p>
+                        <input type="password" id="currentpass" required>
+                    </div>
+                    <div class="box">
+                        <p class="text-muted">New Password</p>
+                        <input type="password" id="newpass" required>
+                        <p class="password-requirements">Minimum 8 characters with at least one number and one special character</p>
+                    </div>
+                    <div class="box">
+                        <p class="text-muted">Confirm Password</p>
+                        <input type="password" id="confirmpass" required>
+                    </div>
+                    <div class="button">
+                        <button type="submit" class="btn">Save</button>
+                        <a href="#" id="cancelPassword" class="text-muted">Cancel</a>
+                    </div>
+                    <a href="#" id="forgotPassword"><p>Forgot password?</p></a>
+                </form>
+            </div>
+        </div>
+    </div>
+<script>
+  const form = document.getElementById('course-form');
+  const courseCodeInput = document.getElementById('course-code');
+  const prelimInput = document.getElementById('prelim-grade');
+  const midtermInput = document.getElementById('midterm-grade');
+  const finalInput = document.getElementById('final-grade');
+  const savedCoursesContainer = document.getElementById('saved-courses');
+  const gwaDisplay = document.getElementById('gwa-display');
+  const submitBtn = document.getElementById('submit-btn');
+
+  let courses = JSON.parse(localStorage.getItem('gwa-courses')) || [];
+  let editingIndex = -1;
+
+  function saveToLocalStorage() {
+    localStorage.setItem('gwa-courses', JSON.stringify(courses));
+  }
+
+  function calculateCourseGrade(prelim, midterm, final) {
+    return (prelim + midterm + final) / 3;
+  }
+
+  function calculateGWA() {
+    if (courses.length === 0) return null;
+    const total = courses.reduce((acc, c) => acc + c.grade, 0);
+    return total / courses.length;
+  }
+
+  function updateGWADisplay() {
+    const gwa = calculateGWA();
+    if (gwa === null) {
+      gwaDisplay.textContent = 'GWA: N/A';
+      gwaDisplay.style.color = 'var(--color-dark-varient)';
+      return;
+    }
+    gwaDisplay.textContent = `GWA: ${gwa.toFixed(2)}`;
+
+    // Color highlight: 
+    // Green if <= 3.0 (passing), yellow if 3.0 to 4.0, red if > 4.0 (failing)
+    if (gwa <= 3.0) {
+      gwaDisplay.style.color = 'var(--color-success)';
+    } else if (gwa <= 4.0) {
+      gwaDisplay.style.color = 'var(--color-warning)';
+    } else {
+      gwaDisplay.style.color = 'var(--color-danger)';
+    }
+  }
+
+  async function fetchBookRecommendations(query) {
+    if (!query) return [];
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=3`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) return [];
+      const data = await response.json();
+      if (!data.items) return [];
+      return data.items.map(item => ({
+        title: item.volumeInfo.title || 'No Title',
+        link: item.volumeInfo.infoLink || '#',
+        authors: item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown Author',
+        description: item.volumeInfo.description || 'No description available.'
+      }));
+    } catch {
+      return [];
+    }
+  }
+
+  function createRecommendationHTML(books) {
+    if (books.length === 0) return '<p>No recommendations found.</p>';
+    const listItems = books.map(book => `
+      <li>
+        <a href="${book.link}" target="_blank" rel="noopener noreferrer">${book.title}</a>
+        <br />
+        <small>by ${book.authors}</small>
+        <p style="margin-top: 0.3rem; font-size: 0.85rem; color: var(--color-dark-varient);">
+          ${book.description.length > 150 ? book.description.slice(0, 150) + '...' : book.description}
+        </p>
+      </li>
+    `).join('');
+    return `<ul>${listItems}</ul>`;
+  }
+
+  async function renderCourses() {
+    savedCoursesContainer.querySelectorAll('.course-card').forEach(c => c.remove());
+
+    for (const [index, course] of courses.entries()) {
+      const card = document.createElement('article');
+      card.classList.add('course-card');
+
+      const info = document.createElement('div');
+      info.classList.add('course-info');
+
+      const text = document.createElement('div');
+      text.classList.add('course-text');
+      text.innerHTML = `
+        <span><b>Course:</b> ${course.code || '(No code)'}</span>
+        <span class="grade-values">
+          Prelim: ${course.prelim.toFixed(2)}, Midterm: ${course.midterm.toFixed(2)}, Final: ${course.final.toFixed(2)}
+          <br><b>Grade:</b> ${course.grade.toFixed(2)}
+        </span>
+      `;
+
+      info.appendChild(text);
+
+      const actions = document.createElement('div');
+      actions.classList.add('actions');
+
+      const updateBtn = document.createElement('button');
+      updateBtn.textContent = 'Update';
+      updateBtn.addEventListener('click', () => startEditCourse(index));
+
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'Remove';
+      removeBtn.classList.add('remove');
+      removeBtn.addEventListener('click', () => {
+        if (confirm(`Remove course "${course.code}"?`)) {
+          courses.splice(index, 1);
+          saveToLocalStorage();
+          renderCourses();
+          updateGWADisplay();
+          clearForm();
+        }
+      });
+
+      actions.appendChild(updateBtn);
+      actions.appendChild(removeBtn);
+      info.appendChild(actions);
+      card.appendChild(info);
+
+      // Add recommendations container
+      const recDiv = document.createElement('div');
+      recDiv.classList.add('recommendations');
+      recDiv.textContent = 'Loading recommendations...';
+
+      card.appendChild(recDiv);
+      savedCoursesContainer.appendChild(card);
+
+      // Fetch and display recommendations asynchronously
+      const books = await fetchBookRecommendations(course.code || course.code);
+      recDiv.innerHTML = createRecommendationHTML(books);
+    }
+
+    updateGWADisplay();
+  }
+
+  function startEditCourse(index) {
+    const course = courses[index];
+    courseCodeInput.value = course.code;
+    prelimInput.value = course.prelim;
+    midtermInput.value = course.midterm;
+    finalInput.value = course.final;
+    submitBtn.textContent = 'Update Course';
+    editingIndex = index;
+  }
+
+  function clearForm() {
+    courseCodeInput.value = '';
+    prelimInput.value = '';
+    midtermInput.value = '';
+    finalInput.value = '';
+    submitBtn.textContent = 'Add Course';
+    editingIndex = -1;
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const code = courseCodeInput.value.trim().toUpperCase();
+    const prelim = parseFloat(prelimInput.value);
+    const midterm = parseFloat(midtermInput.value);
+    const final = parseFloat(finalInput.value);
+
+    if (!code) {
+      alert('Please enter a course code.');
+      return;
+    }
+
+    if (
+      prelim < 1 || prelim > 5 ||
+      midterm < 1 || midterm > 5 ||
+      final < 1 || final > 5
+    ) {
+      alert('Grades must be between 1.0 and 5.0');
+      return;
+    }
+
+    // Prevent duplicate course code except when updating the same one
+    const duplicateIndex = courses.findIndex((c, i) => c.code === code && i !== editingIndex);
+    if (duplicateIndex !== -1) {
+      alert(`Course code "${code}" already exists!`);
+      return;
+    }
+
+    const grade = calculateCourseGrade(prelim, midterm, final);
+
+    if (editingIndex === -1) {
+      courses.push({ code, prelim, midterm, final, grade });
+    } else {
+      courses[editingIndex] = { code, prelim, midterm, final, grade };
+    }
+
+    saveToLocalStorage();
+    renderCourses();
+    clearForm();
+  });
+
+  // Initial render on page load
+  renderCourses();
+</script>
+<script src="profileSettings.js"></script>
+<script src="tabs.js"></script>
+<script src="modal.js"></script>
+<script src="timeTable.js"></script>
+<script src="app.js"></script>
+<script src="grades.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+/* style.css */
+
+:root {
+  --primary: #0a66c2;
+  --white: #ffffff;
+  --black: #1a1a1a;
+  --gray: #f0f0f0;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --radius: 16px;
+  --font: 'Poppins', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--gray);
+  color: var(--black);
+}
+
+.main {
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.main h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--black);
+}
+
+.swiper {
+  width: 100%;
+  padding: 2rem 0;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: 300px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.card h3 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+  color: var(--primary);
+}
+
+.card p {
+  color: #555;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .swiper-slide {
+    width: 80%;
+  }
+
+  .card {
+    width: 100%;
+  }
+  .card.zoom-out {
+  transform: scale(0.85);
+  opacity: 0.7;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  pointer-events: none; /* prevent clicking during animation */
+}
+
+}

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>STUDYPULSE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonts and icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://unicons.iconscout.com/release/v4.0.8/css/line.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+  <style>
+    :root {
+      --bg: linear-gradient(145deg, #f5f6fa, #eef1f7);
+      --card: #ffffff;
+      --shadow-light: rgba(255, 255, 255, 0.8);
+      --shadow-dark: rgba(0, 0, 0, 0.05);
+      --primary: #4f46e5;
+      --text: #2f2f2f;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px var(--shadow-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: default;
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-menu li a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-menu li a:hover {
+      color: var(--primary);
+    }
+
+    section {
+      padding: 100px 20px 60px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .section-desc {
+      font-size: 1rem;
+      color: #555;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Portfolio Section */
+    #contact .swiper {
+      width: 100%;
+      padding-top: 2rem;
+      padding-bottom: 4rem;
+      max-width: 1200px;
+    }
+
+    .swiper-slide {
+      background: var(--card);
+      border-radius: 1.5rem;
+      box-shadow: 8px 8px 20px var(--shadow-dark), -8px -8px 20px var(--shadow-light);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .swiper-slide:hover {
+      transform: translateY(-10px);
+      box-shadow: 12px 12px 30px var(--shadow-dark), -12px -12px 30px var(--shadow-light);
+    }
+
+    .swiper-slide img {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .swiper-slide h3 {
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .swiper-slide p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0;
+    }
+
+    /* Responsive nav menu on small screens */
+    @media (max-width: 768px) {
+      .nav-menu {
+        flex-direction: column;
+        gap: 1rem;
+        background: rgba(255, 255, 255, 0.9);
+        position: fixed;
+        right: 0;
+        top: 60px;
+        width: 200px;
+        padding: 1rem;
+        border-radius: 0 0 0 10px;
+        display: none;
+      }
+
+      nav.active .nav-menu {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+        cursor: pointer;
+        font-size: 1.8rem;
+        color: var(--primary);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="nav-logo">StudyPulse</div>
+    <ul class="nav-menu" id="nav-menu">
+      <li><a href="#home"><i class="uil uil-home-alt"></i>Home</a></li>
+      <li><a href="#services"><i class="uil uil-briefcase"></i>Services</a></li>
+      <li><a href="#about"><i class="uil uil-user"></i>About</a></li>
+      <li><a href="#contact"><i class="uil uil-envelope"></i>Contact</a></li>
+      <li><a href="login.html"><i class="uil uil-signin"></i>Login</a></li>
+    </ul>
+  </nav>
+
+  <!-- Sections -->
+  <section id="home">
+    <h2 class="section-title">Welcome to StudyPulse</h2>
+    <p class="section-desc">Your comprehensive student monitoring and performance tracking platform.</p>
+  </section>
+
+  <section id="services">
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-desc">We offer student performance monitoring, login portals, grade input interfaces, and much more.</p>
+  </section>
+
+  <section id="about">
+    <h2 class="section-title">About Us</h2>
+    <p class="section-desc">StudyPulse is dedicated to empowering students and educators with seamless tools to monitor and enhance academic performance.</p>
+  </section>
+
+  <section id="contact">
+    <h2 class="section-title">Contact</h2>
+    <p class="section-desc">Meet our developers</p>
+
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+
+        <div class="swiper-slide" onclick="location.href='Natividad.html'">
+          <img src="https://assets.onecompiler.app/43fu3h58m/43fvu3j2k/received_9215996018417467.jpeg" alt="Jerome Natividad" />
+          <h3>Jerome Andrei N. Natividad</h3>
+          <p>Full-Stack Developer</p>
+        </div>
+
+        <div class="swiper-slide" onclick="location.href='Mendez.html'">
+          <img src="https://assets.onecompiler.app/43c8azdt9/43c8b2eqm/DSC_0001.JPG" alt="Justine Mendez" />
+          <h3>Justine Carl N.</h3>
+          <p>UI/UX Designer</p>
+        </div>
+
+        <div class="swiper-slide" onclick="location.href='Buenafe.html'">
+          <img src="https://assets.onecompiler.app/43c8b2wna/43c8xtk5w/Screenshot%202025-03-19%20155028.jpg" alt="Emmanuel Tamy L. Buenafe" />
+          <h3>Emmanuel Tamy L. Buenafe</h3>
+          <p>Backend Engineer</p>
+        </div>
+
+        <div class="swiper-slide" onclick="location.href='Sales.html'">
+          <img src="https://assets.onecompiler.app/43c8b2wna/43jjy75kk/Messenger_creation_3FD5CD54-9417-4469-9171-2611C519ECD9.jpeg" alt="Sales, Mark Clevin A." />
+          <h3>Sales, Mark Clevin A.</h3>
+          <p>BackEnd Engineer</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+  <script>
+    const swiper = new Swiper('.mySwiper', {
+      slidesPerView: 1,
+      spaceBetween: 25,
+      loop: true,
+      centeredSlides: true,
+      grabCursor: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+        },
+        1024: {
+          slidesPerView: 3,
+        },
+      },
+    });
+  </script>
+</body>
+</html>

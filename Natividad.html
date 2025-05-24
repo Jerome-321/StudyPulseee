@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jerome Andrei Natividad - Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url("https://assets.onecompiler.app/43fu3h58m/43fu3fztt/bg.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #fff;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      text-align: center;
+      padding: 30px 15px;
+    }
+
+    nav {
+      background: rgba(0, 0, 0, 0.8);
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    nav a:hover {
+      color: #ffcc00;
+    }
+
+    .container {
+      width: 80%;
+      margin: auto;
+      padding: 20px 0;
+      max-width: 1000px;
+    }
+
+    .section-transition {
+      display: block;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    section.active {
+      opacity: 1;
+      transform: translateY(0);
+      z-index: 2;
+    }
+
+    .home-flex {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      transition: all 0.8s ease;
+    }
+
+    .intro-text {
+      font-size: 1.2em;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .profile-picture img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .skills-grid, .projects-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      margin-top: 30px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease;
+    }
+
+    .skills-grid.fade-in, .projects-grid.fade-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .skill-item, .project-item {
+      background: #9b9a9ae6; 
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      width: 120px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      color: #000; 
+    }
+
+    .project-item {
+      width: 250px;
+      height: 240px;
+    }
+
+    .skill-item img, .project-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .project-item img {
+      width: 100%;
+      height: 100px;
+    }
+
+    .skill-item:hover, .project-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    footer {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 15px;
+    }
+
+    .floating-bar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px 20px;
+      border-radius: 50px;
+      box-shadow: 0 0 10px #000;
+      display: flex;
+      gap: 20px;
+      z-index: 999;
+    }
+
+    .floating-bar a {
+      color: white;
+      font-size: 20px;
+      transition: color 0.3s;
+    }
+
+    .floating-bar a:hover {
+      color: #ffcc00;
+    }
+
+    /* New adjustments for Contact */
+    #contact {
+  padding: 40px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#contact h2 {
+  padding: 60px 20px 40px 20px; /* Top, Right, Bottom, Left */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#contact p {
+  font-size: 1.1em;
+  margin-bottom: 20px;
+}
+
+#contact a {
+  color: #ffcc00;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>My Portfolio</h1>
+    <nav>
+      <a onclick="showSection('home')">Home</a>
+      <a onclick="showSection('about')">About</a>
+      <a onclick="showSection('contact')">Contact</a>
+    </nav>
+  </header>
+
+  <div class="floating-bar">
+    <a onclick="showSection('home')" title="Home"><i class="fas fa-home"></i></a>
+    <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+    <a href="https://github.com" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+    <a href="https://google.com" target="_blank" title="Google"><i class="fab fa-google"></i></a>
+  </div>
+
+  <!-- HOME Section -->
+  <section id="home" class="active section-transition">
+    <div class="container home-flex" id="home-content" style="flex-direction: column; align-items: center; text-align: center;">
+      <div class="profile-picture">
+        <img src="https://assets.onecompiler.app/43fu3h58m/43fvu3j2k/received_9215996018417467.jpeg" alt="Your Photo">
+      </div>
+      <div class="intro-text">
+        <p>Hi, I'm Jerome Andrei N. Natividad! A Computer Engineering Student at TIP Manila</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT Section -->
+  <section id="about" class="section-transition">
+    <div class="container">
+      <div class="about-content">
+        <p>I am a passionate and hardworking Computer Engineering (CPE) student with a strong interest in both hardware and software development. I am committed to continuous learning and always strive to stay updated with the latest technologies in the field.</p>
+        <p>I am friendly, approachable, and enjoy working with others. I thrive in team environments and believe that good communication and collaboration are key to achieving success. I’m also someone who stays calm under pressure and takes initiative when challenges arise.</p>
+        <p>Outside of academics, I am an athletic and active individual. I enjoy playing a variety of sports and games, which help me stay focused and energized. I’m also a creative person—I love to draw and express ideas through visuals and design. These hobbies keep me balanced and help me bring both logical and artistic thinking to my work.</p>
+        <p>With my technical skills, strong work ethic, team spirit, and creative mindset, I aim to contribute meaningfully in every opportunity I take while continuing to grow as a person and professional.</p>
+        
+        <h2>Education</h2>
+        <p>Technological Institute of the Philippines - Manila</p>
+        <p>Bachelor of Computer Engineering</p>
+        <p>Expected Graduation: 2028</p>
+
+        <h2>Skills</h2>
+        <div class="skills-grid" id="skills">
+          <div class="skill-item"><img src="https://assets.onecompiler.app/43fu3h58m/43fu3fztt/HTML.png" alt="HTML"><p>HTML</p></div>
+          <div class="skill-item"><img src="https://assets.onecompiler.app/43fu3h58m/43fu3fztt/Python.png" alt="Python"><p>Python</p></div>
+          <div class="skill-item"><img src="https://assets.onecompiler.app/43fu3h58m/43fu3fztt/C++%20-%20Copy.png" alt="C++"><p>C++</p></div>
+          <div class="skill-item"><img src="https://assets.onecompiler.app/43fu3h58m/43fu3fztt/MySQL.png" alt="MySQL"><p>MySQL</p></div>
+          <div class="skill-item"><img src="https://assets.onecompiler.app/43fu3h58m/43fvcgazv/PHP.png" alt="PHP"><p>PHP</p></div>
+          <div class="skill-item"><img src="https://assets.onecompiler.app/43fu3h58m/43fu3fztt/CapCut.png" alt="CapCut"><p>CapCut</p></div>
+          <div class="skill-item"><img src="https://assets.onecompiler.app/43fu3h58m/43fu3fztt/CapCut.png" alt="Networking"><p>Networking</p></div>
+        </div>
+
+        <h2>Projects</h2>
+        <div class="projects-grid" id="projects">
+          <div class="project-item">
+            <img src="https://assets.onecompiler.app/43fu3h58m/43fu3fztt/Joystick.png" alt="Game">
+            <h3>Text-Based Adventure Game</h3>
+            <p>Built with Python & C++. CLI-based storytelling with branching logic.</p>
+          </div>
+          <div class="project-item">
+            <img src="https://assets.onecompiler.app/43fu3h58m/43fu3fztt/calculator.png" alt="Calculator App">
+            <h3>Command-Line Calculator</h3>
+            <p>Modular calculator in Python & C++, with input validation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT Section -->
+  <section id="contact" class="section-transition">
+    <div class="container">
+      <h2>Contact Me</h2>
+      <p>Email: Jeromee7@gmail.com</p>
+      <p>Phone: 09065329271</p>
+      <h2>Resume</h2>
+      <p>You can download my resume <a href="#">here</a>.</p>
+    </div>
+  </section>
+  <script>
+    function showSection(sectionId) {
+      const home = document.getElementById('home');
+      const homeContent = document.getElementById('home-content');
+      const aboutSection = document.getElementById('about');
+      const skills = document.getElementById('skills');
+      const projects = document.getElementById('projects');
+      const allSections = document.querySelectorAll('section');
+
+      if (sectionId === 'about') {
+        homeContent.style.flexDirection = 'column';
+        homeContent.style.alignItems = 'center';
+        homeContent.style.marginTop = '40px';
+
+        setTimeout(() => {
+          allSections.forEach(section => {
+            if (section.id !== 'home' && section.id !== 'about') {
+              section.classList.remove('active');
+            }
+          });
+
+          aboutSection.classList.add('active');
+          skills.classList.add('fade-in');
+          projects.classList.add('fade-in');
+        }, 500);
+      } else {
+        homeContent.style.flexDirection = 'row';
+        homeContent.style.marginTop = '0';
+
+        allSections.forEach(section => section.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      showSection("home");
+    });
+  </script>
+</body>
+</html>

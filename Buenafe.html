@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume - Emmanuel Tamy L. Buenafe</title>
+    <style>
+        /* General body styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #add8e6; /* Light blue background */
+            color: #fff; /* White text color for contrast */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Matrix canvas */
+        #matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        body.dark-mode #matrix {
+            opacity: 0.15;
+        }
+
+        /* Dark blue mode styles */
+        body.dark-mode {
+            background-color: #0a192f; /* Dark navy blue background */
+        }
+        
+        body.dark-mode .container {
+            background: rgba(21, 41, 83, 0.85); /* Slightly lighter navy blue */
+        }
+        
+        body.dark-mode nav {
+            background-color: rgba(21, 41, 83, 0.9); /* Matching the container */
+        }
+        
+        body.dark-mode .section:hover {
+            background-color: #1e3a8a; /* Medium dark blue for hover */
+        }
+
+        /* Dark Mode Toggle Button */
+        .dark-mode-toggle {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 1001;
+            background-color: rgba(21, 41, 83, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: #3b82f6; /* Brighter blue on hover */
+            transform: scale(1.1);
+        }
+
+        .dark-mode-toggle i {
+            font-size: 18px;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: rgba(0, 0, 0, 0.7); /* Darkened nav bar with some transparency */
+            color: #fff;
+            padding: 15px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #2575fc;
+        }
+
+        /* Scroll effect */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Container for the resume */
+        .container {
+            max-width: 800px;
+            margin: 80px auto; /* Space for the fixed nav bar */
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0.95;
+            transition: all 0.3s ease;
+        }
+
+        h1, h2 {
+            color: #fff; /* White color for headings */
+            text-align: center;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .header img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #aaa; /* Lighter text color for details */
+            margin: 5px 0;
+        }
+
+        /* Section styling */
+        .section {
+            margin-bottom: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .section h2 {
+            border-bottom: 2px solid #2575fc;
+            padding-bottom: 5px;
+            color: #2575fc;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 10px 0;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        ul li strong {
+            color: #fff; /* White color for strong text */
+        }
+
+        /* Add hover effects to sections */
+        .section:hover {
+            background-color: #333; /* Slightly lighter background on hover */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        /* Hidden section (initially hidden) */
+        .hidden {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .section.active .hidden {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Contact Information Section */
+        .contact-info {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px solid #2575fc;
+        }
+
+        .contact-info p {
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        /* Responsive design for mobile devices */
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+            
+            .dark-mode-toggle {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+            }
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Matrix Background Canvas -->
+    <canvas id="matrix"></canvas>
+
+    <!-- Dark Mode Toggle Button -->
+    <button class="dark-mode-toggle" id="darkModeBtn" title="Toggle Dark Mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="#about-me" onclick="toggleSection('about-me')">About Me</a></li>
+            <li><a href="#skills" onclick="toggleSection('skills')">Skills</a></li>
+            <li><a href="#dream-job" onclick="toggleSection('dream-job')">My Dream Job</a></li>
+            <li><a href="#contact-info" onclick="toggleSection('contact-info')">Contact Info</a></li>
+        </ul>
+    </nav>
+
+    <!-- Resume Container -->
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <img src="https://assets.onecompiler.app/43c8b2wna/43c8xtk5w/Screenshot%202025-03-19%20155028.jpg" alt="Profile Picture">
+            <h1>Emmanuel Tamy L. Buenafe</h1>
+        </div>
+
+        <!-- About Me Section -->
+        <div id="about-me" class="section" onclick="toggleSection('about-me')">
+            <h2>About Me</h2>
+            <div id="about-me-content" class="hidden">
+                <ul>
+                    <li>I am an engineering and computer programming student passionate about systems engineering, software development, and technology innovation. With hands-on experience in languages like Python, Java, and C++, I strive to apply my knowledge to tackle real-world challenges. I'm committed to continual learning and staying ahead in the tech industry to contribute to impactful projects while advancing my career.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div id="skills" class="section" onclick="toggleSection('skills')">
+            <h2>Skills</h2>
+            <div id="skills-content" class="hidden">
+                <ul>
+                    <li><strong>Technical Skills:</strong> Computer programming, Debugging, Object-Oriented Design, Troubleshooting, Circuit Design, AutoCAD</li>
+                    <li><strong>Programming Skills:</strong> C, C++, Python, HTML, JavaScript</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- My Dream Job Section -->
+        <div id="dream-job" class="section" onclick="toggleSection('dream-job')">
+            <h2>My Dream Job</h2>
+            <div id="dream-job-content" class="hidden">
+                <ul>
+                    <li>My dream job is to work as a systems developer or software engineer in a leading tech company. I aim to leverage my programming and engineering skills to develop innovative software solutions. I am especially interested in roles involving full-stack development or systems engineering, where I can contribute to building scalable and efficient systems while constantly learning and growing professionally.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Contact Information Section -->
+        <div id="contact-info" class="section" onclick="toggleSection('contact-info')">
+            <h2>Contact Information</h2>
+            <div id="contact-info-content" class="hidden">
+                <ul>
+                    <li><strong>Phone:</strong> 09213906807</li>
+                    <li><strong>Email:</strong> <a href="mailto:TamyBuenafe2017@gmail.com" style="color: #2575fc;">TamyBuenafe2017@gmail.com</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Matrix animation
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas to full window size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        // Matrix characters - taken from Katakana and Latin characters
+        const matrixChars = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        
+        // Create an array of drops - one per column
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.floor(Math.random() * -100); // Start at random positions above the screen
+        }
+        
+        function drawMatrix() {
+            // Black background with opacity for the trail effect
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0aff0a'; // Matrix green
+            ctx.font = fontSize + 'px monospace';
+            
+            // Loop over drops
+            for (let i = 0; i < drops.length; i++) {
+                // Get a random character
+                const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+                
+                // Draw the character
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                // Reset drop to top when it reaches bottom with random delay
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                // Move the drop down
+                drops[i]++;
+            }
+        }
+        
+        // Animation loop
+        let matrixInterval;
+        function startMatrix() {
+            matrixInterval = setInterval(drawMatrix, 35);
+        }
+        
+        function stopMatrix() {
+            clearInterval(matrixInterval);
+        }
+        
+        // Start/stop matrix based on dark mode
+        function toggleMatrix() {
+            if (body.classList.contains('dark-mode')) {
+                startMatrix();
+            } else {
+                stopMatrix();
+            }
+        }
+
+        // Function to toggle the visibility of a section
+        function toggleSection(section) {
+            // First hide all sections
+            document.querySelectorAll('.section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            
+            // Then show the clicked section
+            var sectionDiv = document.getElementById(section);
+            sectionDiv.classList.add('active');
+            
+            // Scroll to the section
+            sectionDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Dark mode functionality
+        const darkModeBtn = document.getElementById('darkModeBtn');
+        const body = document.body;
+        
+        // Check for saved user preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            body.classList.add('dark-mode');
+            darkModeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            startMatrix();
+        }
+        
+        darkModeBtn.addEventListener('click', function() {
+            body.classList.toggle('dark-mode');
+            
+            // Save user preference
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                darkModeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                startMatrix();
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                darkModeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                stopMatrix();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
