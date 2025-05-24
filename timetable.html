@@ -1,16 +1,15 @@
+      <!-- Updated version below -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
-    <link rel="shortcut icon" href="./images/logo.png">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* Minimal modal styling for demonstration, you may extend in your style.css */
-        .settings-modal {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Monthly Timetable</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="timetableStyle.css" />
+  <style>
+.settings-modal {
             display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100vw; height: 100vh;
             justify-content: center; align-items: center; background: rgba(0,0,0,0.5);
         }
@@ -46,80 +45,55 @@
             .settings-content { padding: 1rem; }
             .form-group { flex: 1 1 100%; }
         }
-    </style>
+  </style>
 </head>
-<body>
-    <header>
-        <div class="logo">
-            <h2><span class="danger">Study</span>Pulse</h2>
-        </div>
-        <div class="navbar">
-            <a href="dashboard.html">
-                <span class="material-icons-sharp">home</span>
-                <h3>Home</h3>
-            </a>
-            <a href="timetable.html" class="active" onclick="timeTableAll()">
-                <span class="material-icons-sharp">today</span>
-                <h3>Class</h3>
-            </a> 
-            <a href="grades.html">
-                <span class="material-icons-sharp">grid_view</span>
-                <h3>Courses</h3>
-            </a>
-            <!-- Settings modal trigger -->
-            <a href="#" id="openSettings">
+<header>
+    <div class="logo">
+      <h2>Study<span class="danger">Pulse</span></h2>
+    </div>
+    <div class="navbar">
+      <a href="dashboard.html" class="active"><span class="material-icons-sharp">home</span><h3>Home</h3></a>
+      <a href="timetable.html"><span class="material-icons-sharp">today</span><h3>Class</h3></a>
+      <a href="grades.html"><span class="material-icons-sharp">grid_view</span><h3>Courses</h3></a>
+      <a href="#" id="openSettings">
                 <span class="material-icons-sharp">settings</span>
                 <h3>Settings</h3>
-            </a>
-            <a href="index.html">
-                <span class="material-icons-sharp">logout</span>
-                <h3>Logout</h3>
-            </a>
-        </div>
-        <div id="profile-btn" style="display: none;">
-            <span class="material-icons-sharp">person</span>
-        </div>
-        <div class="theme-toggler">
-            <span class="material-icons-sharp active">light_mode</span>
-            <span class="material-icons-sharp">dark_mode</span>
-        </div>
-    </header>
-
-    <main style="margin: 0;">
-        <div class="timetable active" id="timetable">
-            <div>
-                <span id="prevDay">&lt;</span>
-                <h2>Today's Timetable</h2>
-                <span id="nextDay">&gt;</span>
-            </div>
-            <table>
-<form id="customTimetableForm" style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
-    <input type="text" id="inputTime" placeholder="Time (e.g. 8:00-9:00)" required>
-    <input type="text" id="inputRoom" placeholder="Room No." required>
-    <input type="text" id="inputCourse" placeholder="Course" required>
-    <select id="inputType" required>
-        <option value="">Type</option>
-        <option value="Lecture">Lecture</option>
-        <option value="Laboratory">Laboratory</option>
-    </select>
-    <button type="submit" style="background:#7380ec; color:#fff; border:none; border-radius:5px; padding:0 15px;">Add</button>
-</form>
-                <thead>
-                     <tr>
-                        <th>Time</th>
-                        <th>Room No.</th>
-                        <th>Subject</th>
-                        <th>Type</th>
-                        <th></th>
-                     </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-    </main>
-
-    <!-- Settings Modal -->
-    <div class="settings-modal" id="settingsModal">
+      <a href="index.html" id="logout-link"><span class="material-icons-sharp">logout</span><h3>Logout</h3></a>
+    </div>
+    <div id="profile-btn"><span class="material-icons-sharp">person</span></div>
+    <div class="theme-toggler">
+      <span class="material-icons-sharp active">light_mode</span>
+      <span class="material-icons-sharp">dark_mode</span>
+    </div>
+  </header>
+<body>
+  <div class="calendar-container">
+    <div class="header">
+      <button onclick="changeMonth(-1)">&lt;</button>
+      <h2 id="monthLabel"></h2>
+      <button onclick="changeMonth(1)">&gt;</button>
+    </div>
+    <div id="gwaDisplay" class="gwa-display"></div>
+    <div class="weekdays">
+      <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+    </div>
+    <div class="calendar" id="calendar"></div>
+  </div>
+  <div class="sidebar" id="sidebar">
+    <button onclick="closeSidebar()">Close</button>
+    <h3 id="selectedDate"></h3>
+    <form id="entryForm">
+      <input type="text" id="subject" placeholder="Subject" required /><br />
+      <input type="text" id="time" placeholder="e.g., 9:00 AM - 10:30 AM" required /><br />
+      <select id="type">
+        <option>Lecture</option>
+        <option>Laboratory</option>
+      </select><br />
+      <button type="submit">Add Entry</button>
+    </form>
+    <table class="entry-table" id="entryTable"></table>
+  </div>
+<div class="settings-modal" id="settingsModal">
         <div class="settings-content">
             <div class="settings-header">
                 <h2>Account Settings</h2>
@@ -133,7 +107,7 @@
             <div class="tab-content active" id="profile-tab">
                 <form class="settings-form" id="profileForm">
                     <div class="profile-photo-upload" style="width: 100%;">
-                        <img id="profilePreview" src="./images/profile-1.jpg" alt="Profile Photo" class="profile-preview">
+                        <img id="profilePreview" src="Blank-Portfolio-Profile-Image.jpg" alt="Profile Photo" class="profile-preview">
                         <input type="file" id="photoUpload" accept="image/*" style="display: none;">
                         <button type="button" class="photo-upload-btn" onclick="document.getElementById('photoUpload').click()">Upload Photo</button>
                         <input type="text" id="photoUrl" class="photo-url-input" placeholder="Or enter image URL">
@@ -198,182 +172,14 @@
                         <button type="submit" class="btn">Save</button>
                         <a href="#" id="cancelPassword" class="text-muted">Cancel</a>
                     </div>
-                    <a href="#" id="forgotPassword"><p>Forgot password?</p></a>
                 </form>
             </div>
         </div>
     </div>
-
-    <!-- Modal JS -->
-    <script>
-        // Settings Modal Logic
-        function loadProfileData() {
-            const firstName = localStorage.getItem('user_firstname') || 'First';
-            const lastName = localStorage.getItem('user_lastname') || 'Last';
-            const email = localStorage.getItem('user_email') || 'unknown@gmail.com';
-            const dob = localStorage.getItem('user_dob') || '';
-            const contact = localStorage.getItem('user_contact') || '';
-            const course = localStorage.getItem('user_course') || '';
-            const address = localStorage.getItem('user_address') || '';
-            const profilePhoto = localStorage.getItem('user_profile_photo') || './images/profile-1.jpg';
-
-            document.getElementById('firstName').value = firstName;
-            document.getElementById('lastName').value = lastName;
-            document.getElementById('email').value = email;
-            document.getElementById('dob').value = dob;
-            document.getElementById('contact').value = contact;
-            document.getElementById('course').value = course;
-            document.getElementById('address').value = address;
-            document.getElementById('profilePreview').src = profilePhoto;
-        }
-
-        document.getElementById('openSettings').addEventListener('click', function(e) {
-            e.preventDefault();
-            loadProfileData();
-            document.getElementById('settingsModal').classList.add('active');
-        });
-        document.getElementById('closeSettings').addEventListener('click', function() {
-            document.getElementById('settingsModal').classList.remove('active');
-        });
-        document.querySelectorAll('.settings-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                const tabId = this.getAttribute('data-tab');
-                document.getElementById(tabId + '-tab').classList.add('active');
-            });
-        });
-        document.getElementById('photoUpload').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    document.getElementById('profilePreview').src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-        document.getElementById('photoUrl').addEventListener('change', function() {
-            const url = this.value.trim();
-            if (url) {
-                document.getElementById('profilePreview').src = url;
-            }
-        });
-        document.getElementById('profileForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const email = document.getElementById('email').value;
-            const dob = document.getElementById('dob').value;
-            const contact = document.getElementById('contact').value;
-            const course = document.getElementById('course').value;
-            const address = document.getElementById('address').value;
-            const profilePhoto = document.getElementById('profilePreview').src;
-
-            localStorage.setItem('user_firstname', firstName);
-            localStorage.setItem('user_lastname', lastName);
-            localStorage.setItem('user_email', email);
-            localStorage.setItem('user_dob', dob);
-            localStorage.setItem('user_contact', contact);
-            localStorage.setItem('user_course', course);
-            localStorage.setItem('user_address', address);
-            localStorage.setItem('user_profile_photo', profilePhoto);
-
-            alert('Profile updated successfully!');
-        });
-        document.getElementById('passwordForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const currentPass = document.getElementById('currentpass').value;
-            const newPass = document.getElementById('newpass').value;
-            const confirmPass = document.getElementById('confirmpass').value;
-            if (newPass !== confirmPass) {
-                alert("New passwords don't match!");
-                return;
-            }
-            if (newPass.length < 8) {
-                alert("Password must be at least 8 characters long!");
-                return;
-            }
-            alert('Password changed successfully!');
-            this.reset();
-        });
-        window.addEventListener('click', function(event) {
-            if (event.target === document.getElementById('settingsModal')) {
-                document.getElementById('settingsModal').classList.remove('active');
-            }
-        });
-    </script>
-
-    <!-- Your existing scripts -->
-    <script src="timeTable.js"></script>
-    <script src="app.js"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('customTimetableForm');
-    const tbody = document.querySelector('#timetable tbody');
-
-    // Load timetable from server on page load
-    fetch('save_timetable.php?action=get')
-        .then(response => response.json())
-        .then(data => {
-            renderTimetable(data);
-        });
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const time = document.getElementById('inputTime').value;
-        const room = document.getElementById('inputRoom').value;
-        const course = document.getElementById('inputCourse').value;
-        const type = document.getElementById('inputType').value;
-
-        // Send to server
-        fetch('save_timetable.php?action=add', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ time, room, course, type })
-        })
-        .then(response => response.json())
-        .then(data => {
-            renderTimetable(data);
-            form.reset();
-        });
-    });
-
-    function renderTimetable(entries) {
-    const tbody = document.querySelector('#timetable tbody');
-    tbody.innerHTML = '';
-    if (entries && entries.length > 0) {
-        document.getElementById('timetable').style.display = 'block'; // SHOW timetable
-        entries.forEach((entry, idx) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${entry.time}</td>
-                <td>${entry.room}</td>
-                <td>${entry.course}</td>
-                <td>${entry.type}</td>
-                <td><button onclick="removeEntry(${idx})" style="color:red; border:none; background:none; cursor:pointer;">Remove</button></td>
-            `;
-            tbody.appendChild(tr);
-        });
-    } else {
-        document.getElementById('timetable').style.display = 'none'; // HIDE timetable if empty
-    }
-}
-    // Remove entry
-    window.removeEntry = function(idx) {
-        fetch('save_timetable.php?action=remove', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ idx })
-        })
-        .then(response => response.json())
-        .then(data => {
-            renderTimetable(data);
-        });
-    }
-});
-</script>
+<script src="timetable.js"></script>
+<script src="settingsProfile.js"></script>
+<script src="tabs.js"></script>
+<script src="modal.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
