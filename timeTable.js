@@ -4,35 +4,12 @@ const calendar = document.getElementById("calendar");
     const entryForm = document.getElementById("entryForm");
     const monthLabel = document.getElementById("monthLabel");
     const selectedDateElem = document.getElementById("selectedDate");
-    const gwaDisplay = document.getElementById("gwaDisplay");
     let currentDate = new Date();
     let selectedDay = null;
     const scheduleData = JSON.parse(localStorage.getItem("timetable")) || {};
 
     function saveData() {
       localStorage.setItem("timetable", JSON.stringify(scheduleData));
-    }
-
-    function calculateGWA() {
-      let total = 0, count = 0;
-      for (const date in scheduleData) {
-        scheduleData[date].forEach(entry => {
-          const grade = parseFloat(entry.grade);
-          if (!isNaN(grade)) {
-            total += grade;
-            count++;
-          }
-        });
-      }
-      if (count === 0) {
-        gwaDisplay.textContent = "GWA: N/A";
-        gwaDisplay.style.backgroundColor = "transparent";
-        return;
-      }
-      const gwa = total / count;
-      let bgColor = gwa <= 1.75 ? 'var(--gwa-good)' : gwa <= 2.5 ? 'var(--gwa-average)' : 'var(--gwa-poor)';
-      gwaDisplay.textContent = `GWA: ${gwa.toFixed(2)}`;
-      gwaDisplay.style.backgroundColor = bgColor;
     }
 
     function renderCalendar() {
