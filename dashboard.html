@@ -45,6 +45,12 @@
             .settings-content { padding: 1rem; }
             .form-group { flex: 1 1 100%; }
         }
+        #dashboard-gwa {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 1.2em;
+}
+
 </style>
 
 </head>
@@ -97,6 +103,12 @@
       <h1>Grades</h1>
       <div id="dashboard-courses">Loading courses...</div>
       <div class="subjects" id="dynamic-grades"></div>
+      <div id="dashboard-grades">
+      <div id="dashboard-courses">
+        <!-- course summaries get rendered here -->
+        </div>
+        <div id="dashboard-gwa"></div> <!-- GWA shown here, below courses -->
+        </div>
 
       <div class="timetable" id="timetable">
         <div>
@@ -254,6 +266,41 @@
   }
 
   renderDashboard();
+
+  function renderDashboard() {
+  const container = document.getElementById('dashboard-courses');
+  container.innerHTML = ''; // clear previous
+
+  const courses = JSON.parse(localStorage.getItem('gwa-courses')) || [];
+
+  if (courses.length === 0) {
+    container.textContent = 'No saved courses found.';
+    return;
+  }
+
+  courses.forEach(course => {
+    const courseDiv = document.createElement('div');
+    courseDiv.className = 'course-summary';
+    courseDiv.innerHTML = `
+      <h4>${course.code}</h4>
+      <p>Prelim: ${course.prelim.toFixed(2)}, Midterm: ${course.midterm.toFixed(2)}, Final: ${course.final.toFixed(2)}</p>
+      <p><strong>Grade: ${course.grade.toFixed(2)}</strong></p>
+    `;
+    container.appendChild(courseDiv);
+  });
+
+  // Create GWA div here and append below courses
+  const gwa = calculateGWA(courses);
+  const gwaDiv = document.createElement('div');
+  gwaDiv.id = 'dashboard-gwa';
+  gwaDiv.textContent = `GWA: ${gwa.toFixed(2)}`;
+  gwaDiv.style.marginTop = '20px';
+  gwaDiv.style.fontWeight = 'bold';
+  gwaDiv.style.fontSize = '1.2em';
+
+  container.appendChild(gwaDiv);
+}
+
 </script>
 
 <script src="dashboard.js" defer></script>
