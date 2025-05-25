@@ -18,7 +18,7 @@
   --color-info: #7d8da1;
   --color-dark: #363949;
   --color-light: rgba(132, 139, 200, 0.18);
-  --color-dark-varient: #677483;
+  --color-dark-variant: #677483;
   --color-background: #f6f6f9;
   --box-shadow: 0 2rem 3rem var(--color-light);
   --card-border-radius: 2rem;
@@ -70,7 +70,7 @@ h1 {
 
 label {
   font-weight: 600;
-  color: var(--color-dark-varient);
+  color: var(--color-dark-variant);
 }
 
 input[type="text"],
@@ -112,7 +112,7 @@ button {
 }
 
 button:hover {
-  background: var(--color-dark-varient);
+  background: var(--color-dark-variant);
 }
 
 
@@ -165,7 +165,7 @@ button:hover {
   display: flex;
   gap: 1rem;
   font-size: 0.95rem;
-  color: var(--color-dark-varient);
+  color: var(--color-dark-variant);
   margin-bottom: 0.5rem;
 }
 
@@ -316,7 +316,7 @@ button:hover {
 <div class="container">
   <form id="course-form" autocomplete="off">
     <label for="course-code">Course</label>
-    <input type="text" id="course-code" placeholder="Enter course/subject" />
+    <input type="text" id="course-code" placeholder="Enter course/subject" required/>
 
     <label for="prelim-grade">Prelim Grade (1.0 - 5.0)</label>
     <input type="number" id="prelim-grade" min="1" max="5" step="0.01" placeholder="1.0 to 5.0" required />
@@ -329,9 +329,8 @@ button:hover {
 
     <button type="submit" id="submit-btn">Add Course</button>
   </form>
-   <section id="saved-courses"></section> 
+ <section id="saved-courses"></section>  
   <div id="gwa-display">GWA: N/A
-  <section id="saved-courses"></section>  
   </div>
     
   </section>
@@ -420,6 +419,11 @@ button:hover {
             </div>
         </div>
     </div>
+
+
+
+<div id="saved-courses"></div>
+
 <script>
   const form = document.getElementById('course-form');
   const courseCodeInput = document.getElementById('course-code');
@@ -427,7 +431,6 @@ button:hover {
   const midtermInput = document.getElementById('midterm-grade');
   const finalInput = document.getElementById('final-grade');
   const savedCoursesContainer = document.getElementById('saved-courses');
-  const gwaDisplay = document.getElementById('gwa-display');
   const submitBtn = document.getElementById('submit-btn');
 
   let courses = JSON.parse(localStorage.getItem('gwa-courses')) || [];
@@ -439,32 +442,6 @@ button:hover {
 
   function calculateCourseGrade(prelim, midterm, final) {
     return (prelim + midterm + final) / 3;
-  }
-
-  function calculateGWA() {
-    if (courses.length === 0) return null;
-    const total = courses.reduce((acc, c) => acc + c.grade, 0);
-    return total / courses.length;
-  }
-
-  function updateGWADisplay() {
-    const gwa = calculateGWA();
-    if (gwa === null) {
-      gwaDisplay.textContent = 'GWA: N/A';
-      gwaDisplay.style.color = 'var(--color-dark-varient)';
-      return;
-    }
-    gwaDisplay.textContent = `GWA: ${gwa.toFixed(2)}`;
-
-    // Color highlight: 
-    // Green if <= 3.0 (passing), yellow if 3.0 to 4.0, red if > 4.0 (failing)
-    if (gwa <= 3.0) {
-      gwaDisplay.style.color = 'var(--color-success)';
-    } else if (gwa <= 4.0) {
-      gwaDisplay.style.color = 'var(--color-warning)';
-    } else {
-      gwaDisplay.style.color = 'var(--color-danger)';
-    }
   }
 
   async function fetchBookRecommendations(query) {
@@ -488,80 +465,62 @@ button:hover {
 
   function createRecommendationHTML(books) {
     if (books.length === 0) return '<p>No recommendations found.</p>';
-    const listItems = books.map(book => `
-      <li>
-        <a href="${book.link}" target="_blank" rel="noopener noreferrer">${book.title}</a>
-        <br />
+    const listItems = books.map(book =>
+      `<li>
+        <a href="${book.link}" target="_blank" rel="noopener noreferrer">${book.title}</a><br />
         <small>by ${book.authors}</small>
         <p style="margin-top: 0.3rem; font-size: 0.85rem; color: var(--color-dark-varient);">
           ${book.description.length > 150 ? book.description.slice(0, 150) + '...' : book.description}
         </p>
-      </li>
-    `).join('');
+      </li>`
+    ).join('');
     return `<ul>${listItems}</ul>`;
   }
 
   async function renderCourses() {
-    savedCoursesContainer.querySelectorAll('.course-card').forEach(c => c.remove());
+    savedCoursesContainer.innerHTML = '';
 
     for (const [index, course] of courses.entries()) {
       const card = document.createElement('article');
       card.classList.add('course-card');
 
-      const info = document.createElement('div');
-      info.classList.add('course-info');
-
-      const text = document.createElement('div');
-      text.classList.add('course-text');
-      text.innerHTML = `
-        <span><b>Course:</b> ${course.code || '(No code)'}</span>
-        <span class="grade-values">
-          Prelim: ${course.prelim.toFixed(2)}, Midterm: ${course.midterm.toFixed(2)}, Final: ${course.final.toFixed(2)}
-          <br><b>Grade:</b> ${course.grade.toFixed(2)}
-        </span>
+      card.innerHTML = `
+        <div class="course-info">
+          <div class="course-text">
+            <span><b>Course:</b> ${course.code || '(No code)'}</span><br />
+            <span class="grade-values">
+              Prelim: ${course.prelim.toFixed(2)}, Midterm: ${course.midterm.toFixed(2)}, Final: ${course.final.toFixed(2)}<br />
+              <b>Grade:</b> ${course.grade.toFixed(2)}
+            </span>
+          </div>
+          <div class="actions">
+            <button class="update-btn">Update</button>
+            <button class="remove-btn">Remove</button>
+          </div>
+        </div>
+        <div class="recommendations">Loading recommendations...</div>
       `;
 
-      info.appendChild(text);
-
-      const actions = document.createElement('div');
-      actions.classList.add('actions');
-
-      const updateBtn = document.createElement('button');
-      updateBtn.textContent = 'Update';
+      const updateBtn = card.querySelector('.update-btn');
       updateBtn.addEventListener('click', () => startEditCourse(index));
 
-      const removeBtn = document.createElement('button');
-      removeBtn.textContent = 'Remove';
-      removeBtn.classList.add('remove');
+      const removeBtn = card.querySelector('.remove-btn');
       removeBtn.addEventListener('click', () => {
         if (confirm(`Remove course "${course.code}"?`)) {
           courses.splice(index, 1);
           saveToLocalStorage();
           renderCourses();
-          updateGWADisplay();
           clearForm();
         }
       });
 
-      actions.appendChild(updateBtn);
-      actions.appendChild(removeBtn);
-      info.appendChild(actions);
-      card.appendChild(info);
-
-      // Add recommendations container
-      const recDiv = document.createElement('div');
-      recDiv.classList.add('recommendations');
-      recDiv.textContent = 'Loading recommendations...';
-
-      card.appendChild(recDiv);
       savedCoursesContainer.appendChild(card);
 
-      // Fetch and display recommendations asynchronously
-      const books = await fetchBookRecommendations(course.code || course.code);
+      // Fetch and show recommendations asynchronously:
+      const recDiv = card.querySelector('.recommendations');
+      const books = await fetchBookRecommendations(course.code);
       recDiv.innerHTML = createRecommendationHTML(books);
     }
-
-    updateGWADisplay();
   }
 
   function startEditCourse(index) {
@@ -605,7 +564,6 @@ button:hover {
       return;
     }
 
-    // Prevent duplicate course code except when updating the same one
     const duplicateIndex = courses.findIndex((c, i) => c.code === code && i !== editingIndex);
     if (duplicateIndex !== -1) {
       alert(`Course code "${code}" already exists!`);
@@ -621,13 +579,41 @@ button:hover {
     }
 
     saveToLocalStorage();
-    renderCourses();
+    await renderCourses();
     clearForm();
   });
 
-  // Initial render on page load
+  // Initial render
   renderCourses();
+  
+function calculateGWA() {
+    if (courses.length === 0) return null;
+    const total = courses.reduce((acc, c) => acc + c.grade, 0);
+    return total / courses.length;
+  }
+
+  function updateGWADisplay() {
+    const gwa = calculateGWA();
+    if (gwa === null) {
+      gwaDisplay.textContent = 'GWA: N/A';
+      gwaDisplay.style.color = 'var(--color-dark-varient)';
+      return;
+    }
+    gwaDisplay.textContent = `GWA: ${gwa.toFixed(2)}`;
+
+    // Color highlight: 
+    // Green if <= 3.0 (passing), yellow if 3.0 to 4.0, red if > 4.0 (failing)
+    if (gwa <= 3.0) {
+      gwaDisplay.style.color = 'var(--color-success)';
+    } else if (gwa <= 4.0) {
+      gwaDisplay.style.color = 'var(--color-warning)';
+    } else {
+      gwaDisplay.style.color = 'var(--color-danger)';
+    }
+  }
 </script>
+
+
 <script src="profileSettings.js"></script>
 <script src="tabs.js"></script>
 <script src="modal.js"></script>
