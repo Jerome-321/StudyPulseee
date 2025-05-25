@@ -95,6 +95,7 @@
 
     <main>
       <h1>Grades</h1>
+      <div id="dashboard-courses">Loading courses...</div>
       <div class="subjects" id="dynamic-grades"></div>
 
       <div class="timetable" id="timetable">
@@ -214,30 +215,48 @@
 <script src="modal.js"></script>
 <script src="timeTable.js"></script>
 <script src="app.js"></script>
+<div id="dashboard-courses"></div>
+<div id="dashboard-gwa" style="margin-top:1rem; font-weight:bold;"></div>
+
 <script>
-  <script>
-  window.onload = function() {
-    let courses = JSON.parse(localStorage.getItem("courses")) || [];
-    let container = document.getElementById("dynamic-grades");
+  function calculateGWA(courses) {
+    if (!courses || courses.length === 0) return null;
+    let total = 0;
+    for (const c of courses) total += c.grade;
+    return total / courses.length;
+  }
+
+  function renderDashboard() {
+    const container = document.getElementById('dashboard-courses');
+    const gwaDisplay = document.getElementById('dashboard-gwa');
+    const courses = JSON.parse(localStorage.getItem('gwa-courses')) || [];
+
+    container.innerHTML = '';
+    if (courses.length === 0) {
+      container.textContent = 'No saved courses found.';
+      gwaDisplay.textContent = '';
+      return;
+    }
 
     courses.forEach(course => {
-        let div = document.createElement("div");
-        div.className = "grade-card";
-        div.innerHTML = `
-            <h3><span class="material-icons-sharp">school</span>
-            ${course.name}</h3>
-            <p>${course.prelim} / ${course.midterm} / ${course.final}</p>
-            <div class="progress" style="--percentage:${course.percentage}">
-                <svg><circle cx="38" cy="38" r="36"></circle></svg>
-                <div class="number"><p>${course.percentage}%</p></div>
-            </div>
-            <small>Updated</small>
-        `;
-        container.appendChild(div);
+      const courseDiv = document.createElement('div');
+      courseDiv.className = 'course-summary';
+      courseDiv.innerHTML = `
+        <h4>${course.code}</h4>
+        <p>Prelim: ${course.prelim.toFixed(2)}, Midterm: ${course.midterm.toFixed(2)}, Final: ${course.final.toFixed(2)}</p>
+        <p><strong>Grade: ${course.grade.toFixed(2)}</strong></p>
+      `;
+      container.appendChild(courseDiv);
     });
-};
+
+    const gwa = calculateGWA(courses);
+    gwaDisplay.textContent = `GWA: ${gwa.toFixed(2)}`;
+  }
+
+  renderDashboard();
 </script>
-</script>
+
+<script src="dashboard.js" defer></script>
+
 </body>
 </html>
-
